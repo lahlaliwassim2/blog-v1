@@ -8,10 +8,12 @@ const Avis = require('./models/avis')
 const Comment = require('./models/comment')
 const Article = require('./models/articles');
 const User = require('./models/users');
+let bodyParser = require('body-parser')
 
 
 const ArticleRouter = require('./routes/routeArticle')
 const CmntRouter = require('./routes/routeCmnt')
+
 
 
 app.get('/',(req,res)=>{
@@ -33,7 +35,11 @@ Avis.belongsTo(User);
 
 db.sync().then(()=>console.log('ca marche ')).catch((error)=>{console.log(error)})
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
 
+// parse application/json
+app.use(bodyParser.json())
 app.use('/article',ArticleRouter)
 app.use('/cmnt',CmntRouter)
 
