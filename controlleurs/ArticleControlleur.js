@@ -13,29 +13,42 @@ const addPost =  (req, res)=>{
      }
   
   
-  const findPost = async (req,res)=>{
-  
-    try {
-        const data = Article.findAll()
-        res.status(201).json(data)
-    } catch (error) {
-        console.log(error.message)
-    }
-  }
+     const findPost = async (req, res) => {
+       const data =  await Article.findAll()
+          .then((data) => {
+            return data;
+          })
+          .catch((err) => {
+            console.log("This Controller Not Working " + err);
+          });
+
+          return data;
+      };
+        
   
   const findSinglePost = async (req,res)=>{
-      res.send('find wahad  mzyana')
-      
+      const articles = await Article.findOne({
+        where: {id : (req.params.id)}
+      })   
+      res.json(articles)
   }
   
-  const updatePost = async (req,res)=>{
-  
-      res.send('update mzyana')
-  }
-  const deletePost = async (req,res)=>{
-  
-      res.send('delete mzyana')
-  }
+  const updatePost = async (req, res) => {
+    const article = await Article.update(
+     
+      {
+        where: { id: req.params.id },
+      }
+    );
+    res.json(article);
+  };
+  const deletePost = async (req, res) => {
+    const articles = await Article.destroy({
+      where: { id: req.params.id },
+    });
+
+    res.json(articles);
+  };
   module.exports={
       addPost,
       findPost,
@@ -43,3 +56,5 @@ const addPost =  (req, res)=>{
       updatePost,
       deletePost
   }
+
+
