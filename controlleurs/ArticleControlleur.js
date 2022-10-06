@@ -15,7 +15,12 @@ const addPost =  (req, res)=>{
   
   const findPost = async (req,res)=>{
   
-      res.send('find kolchi mzyana')
+    try {
+        const data = Article.findAll()
+        res.status(201).json(data)
+    } catch (error) {
+        console.log(error.message)
+    }
   }
   
   const findSinglePost = async (req,res)=>{
